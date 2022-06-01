@@ -9,10 +9,7 @@ var userSchema = mongoose.Schema({
 		email: {
 			type: String,
 			required: true,
-			require: true,
-			index: true,
 			unique: true,
-			sparse: true,
 		},
 		password: {
 			type: String,
@@ -22,7 +19,9 @@ var userSchema = mongoose.Schema({
 			type: String,
 			required: true,
 		},
-		message: String,
+		message: {
+			type: String,
+		},
 	},
 })
 

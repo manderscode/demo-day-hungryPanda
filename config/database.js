@@ -1,6 +1,6 @@
 // config/database.js
 module.exports = { //exporting an object
 
-    'url' : 'mongodb+srv://mawong2:eVUa3qBDYCkoNjyi@cluster0.3xblz.mongodb.net/hungryPanda?retryWrites=true&w=majority', 
+    'url' : 'mongodb+srv://mawong:Maw462022**@cluster0.trnh2.mongodb.net/?retryWrites=true&w=majority',
     'dbName': 'hungryPanda'
 };

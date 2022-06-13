@@ -32,8 +32,8 @@ https://www.tooplate.com/view/2095-level
 
     <body>
         <div class="tm-main-content" id="top">
-            <div class="tm-top-bar-bg"></div>
-            <div class="tm-top-bar" id="tm-top-bar">
+            <div class=""></div>
+            <div class="" id="tm-top-bar">
                 <!-- Top Navbar -->
                 <div class="container">
                     <div class="row">
@@ -55,10 +55,10 @@ https://www.tooplate.com/view/2095-level
                                     <a class="nav-link" href="#tm-section-4">Grocery Stores</a>
                                   </li>
                                   <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-5">Snack Attack!</a>
+                                    <a class="nav-link" href="#tm-section-5">Snacks</a>
                                   </li>
                                   <li class="nav-item">
-                                    <a class="nav-link" href="#tm-section-6">Sign-Up</a>
+                                    <a class="nav-link" href="#tm-section-6">Login</a>
                                   </li>
                                 </ul>
                             </div>                            
@@ -88,7 +88,7 @@ https://www.tooplate.com/view/2095-level
                                             <i class="fa fa-2x fa-bed tm-form-element-icon"></i>
                                         </div> 
                                         <div class="form-group tm-form-element tm-form-element-2">
-                                            <button id="checkGrocery" type="submit" class="btn btn-primary tm-btn-search">Check Availability</button>
+                                            <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" id="checkGrocery" type="submit" class="btn btn-primary tm-btn-search">Search for Grocery Store</button>
                                         </div>
                                       </div>
                                       <div class="form-row clearfix pl-2 pr-2 tm-fx-col-xs">
@@ -120,7 +120,7 @@ https://www.tooplate.com/view/2095-level
                                     <div class="form-group">
                                         <textarea id="contact_message" name="message" class="form-control" rows="9" placeholder="Message Us Why You Want HungryPanda to Help Your Business Gain Exposure." required></textarea>
                                     </div>
-                                    <button type="submit" class="btn btn-primary tm-btn-primary">Business Sign-Up</button>
+                                    <button type="submit" class="btn btn-primary tm-btn-primary"> Sign-up</button>
                                 </form>
                             </div>                            
                         </div>
@@ -139,6 +139,28 @@ https://www.tooplate.com/view/2095-level
                 </div>                
             </footer>
         </div>
+
+        <div class="modal fade" id="exampleModal" tabindex="1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Create New Post</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="d-flex justify-content-center">
+
+                    <div class="text-center">
+                        <ul id="groceryStoreResults"> </ul>
+        
+                    </div>
+        
+        
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         
         <!-- load JS files -->
         <script src="/js/homepage.js"></script>
@@ -148,7 +170,11 @@ https://www.tooplate.com/view/2095-level
         <script src="js/datepicker.min.js"></script>                <!-- https://github.com/qodesmith/datepicker -->
         <script src="js/jquery.singlePageNav.min.js"></script>      <!-- Single Page Nav (https://github.com/ChrisWojcik/single-page-nav) -->
         <script src="slick/slick.min.js"></script>                  <!-- http://kenwheeler.github.io/slick/ -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
         <script>
+
 
         </script>             
 

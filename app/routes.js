@@ -1,4 +1,6 @@
 module.exports = function (app, passport, db) {
+const cloudinary = require("../config/cloudinary")
+const upload = require("../config/multer") // this is a module AKA another js file you're using from an external source
   // normal routes ===============================================================
 
   // show the home page (will also have our login links)
@@ -134,12 +136,36 @@ module.exports = function (app, passport, db) {
       })
     // { message: req.flash('loginMessage') })
   });
-  // User Profile 
 
-  app.get("/profile", (req, res) => {
-    res.render("profile.ejs", {});
-    // { message: req.flash('loginMessage') })
+  // User Profile 
+  // tells the db to find the user with that specific id 
+  app.get("/profile", isLoggedIn, (req, res) => {
+	let user=req.user._id
+	db.collection('posts').find({user:user}).toArray((err, result) => {
+        if (err) return console.log(err)
+        res.render('profile.ejs', {
+          posts: result
+        })
+      })
+	// { message: req.flash('loginMessage') })
   });
+
+  app.post("/makePost",upload.single("file"), async (req, res) => {
+	let user=req.user._id
+	let photo
+	try{
+		photo = await cloudinary.uploader.upload(req.file.path)
+		db.collection('posts').save({user: user, foodDescription: req.body.foodDescription, yesBuySnackAgain: req.body.yesBuySnackAgain, noBuySnackAgain:req.body.noBuySnackAgain, photo: photo.secure_url}, (err, result) => {
+			if (err) return console.log(err)
+			console.log("You Posted!")
+			res.redirect("/cmart")
+			})
+		
+	} catch (err){ 
+		console.log(err)
+	}
+
+  }); 
 
   // SIGNUP =================================
   // show the signup form

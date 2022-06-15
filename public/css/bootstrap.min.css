@@ -253,6 +253,7 @@ figure {
   margin: 0 0 1rem;
 }
 img {
+  width: 200px;
   vertical-align: middle;
   border-style: none;
 }

@@ -46,7 +46,7 @@
                             <p><%= posts[i].noBuySnackAgain %></p>
                             <%console.log(posts[i])%>
                             
-                            <button id="<%=posts[i]._id %>" onClick="<%= console.log('addFavorite') %>"> Add to Favorites</button>
+                            <button id="<%=posts[i]._id %>" onClick="addFavorite('<%=posts[i]._id %>')"> Add to Favorites</button>
 
                             <!-- <a href="#" class="text-uppercase tm-color-primary tm-font-semibold">Continue reading...</a> -->
                         </div>                                

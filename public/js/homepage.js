@@ -9,6 +9,7 @@ const options = {
   },
 };
 
+
 checkGroceryButton.addEventListener("click", (e) => {
   e.preventDefault();
   fetch(
@@ -32,3 +33,15 @@ checkGroceryButton.addEventListener("click", (e) => {
 
     .catch((err) => console.error(err));
 });
+
+//making a fetch request to the put request "addFavorite"
+function addFavorite(event) {
+  console.log('addFavorite')
+	const requestOptions = {
+		method: 'PUT',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify({ postId: event.target.id }),
+	}
+	fetch('addFavorite', requestOptions)
+}
+

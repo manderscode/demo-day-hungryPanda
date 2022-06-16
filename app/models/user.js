@@ -15,13 +15,12 @@ var userSchema = mongoose.Schema({
 			type: String,
 			required: true,
 		},
-		groceryStoreName: {
-			type: String,
-			required: true,
-		},
-		message: {
-			type: String,
-		},
+
+		favorites: { 
+			type: Array,
+			default: [], 
+
+		}
 	},
 })
 

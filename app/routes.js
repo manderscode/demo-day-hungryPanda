@@ -1,6 +1,6 @@
 module.exports = function (app, passport, db) {
-const cloudinary = require("../config/cloudinary")
-const upload = require("../config/multer") // this is a module AKA another js file you're using from an external source
+  const cloudinary = require("../config/cloudinary");
+  const upload = require("../config/multer"); // this is a module AKA another js file you're using from an external source
   // normal routes ===============================================================
 
   // show the home page (will also have our login links)
@@ -15,17 +15,17 @@ const upload = require("../config/multer") // this is a module AKA another js fi
   });
 
   // PROFILE SECTION =========================
-//   app.get("/profile", isLoggedIn, function (req, res) {
-//     db.collection("messages")
-//       .find()
-//       .toArray((err, result) => {
-//         if (err) return console.log(err);
-//         res.render("profile.ejs", {
-//           user: req.user,
-//           messages: result,
-//         });
-//       });
-//   });
+  //   app.get("/profile", isLoggedIn, function (req, res) {
+  //     db.collection("messages")
+  //       .find()
+  //       .toArray((err, result) => {
+  //         if (err) return console.log(err);
+  //         res.render("profile.ejs", {
+  //           user: req.user,
+  //           messages: result,
+  //         });
+  //       });
+  //   });
 
   // LOGOUT ==============================
   app.get("/logout", function (req, res) {
@@ -128,45 +128,66 @@ const upload = require("../config/multer") // this is a module AKA another js fi
   // CMart
 
   app.get("/cmart", (req, res) => {
-	db.collection('posts').find().toArray((err, result) => {
-        if (err) return console.log(err)
-        res.render('cmart.ejs', {
-          posts: result
-        })
-      })
+    db.collection("posts")
+      .find()
+      .toArray((err, result) => {
+        if (err) return console.log(err);
+		console.log(result)
+        res.render("cmart.ejs", {
+          posts: result,
+        });
+      });
     // { message: req.flash('loginMessage') })
   });
 
-  // User Profile 
-  // tells the db to find the user with that specific id 
+  // User Profile
+  // tells the db to find the user with that specific id
   app.get("/profile", isLoggedIn, (req, res) => {
-	let user=req.user._id
-	db.collection('posts').find({user:user}).toArray((err, result) => {
-        if (err) return console.log(err)
-        res.render('profile.ejs', {
-          posts: result
-        })
-      })
-	// { message: req.flash('loginMessage') })
+    let user = req.user._id;
+    db.collection("posts")
+      .find({ user: user })
+      .toArray((err, result) => {
+        if (err) return console.log(err);
+        res.render("profile.ejs", {
+          posts: result,
+        });
+      });
+    // { message: req.flash('loginMessage') })
   });
 
-  app.post("/makePost",upload.single("file"), async (req, res) => {
-	let user=req.user._id
-	let photo
-	try{
-		photo = await cloudinary.uploader.upload(req.file.path)
-		db.collection('posts').save({user: user, foodDescription: req.body.foodDescription, yesBuySnackAgain: req.body.yesBuySnackAgain, noBuySnackAgain:req.body.noBuySnackAgain, photo: photo.secure_url}, (err, result) => {
-			if (err) return console.log(err)
-			console.log("You Posted!")
-			res.redirect("/cmart")
-			})
-		
-	} catch (err){ 
+  app.post("/makePost", upload.single("file"), async (req, res) => {
+    let user = req.user._id;
+    let photo;
+    try {
+      photo = await cloudinary.uploader.upload(req.file.path);
+      db.collection("posts").save(
+        {
+          user: user,
+          foodDescription: req.body.foodDescription,
+          yesBuySnackAgain: req.body.yesBuySnackAgain,
+          noBuySnackAgain: req.body.noBuySnackAgain,
+          photo: photo.secure_url,
+        },
+        (err, result) => {
+          if (err) return console.log(err);
+          console.log("You Posted!");
+          res.redirect("/cmart");
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  });
+  app.put("/addFavorite", (req, res) => {
+	// Object Destructuring (pulling values out of an object into their own variables)
+	const {postId } = req.body
+	try {
+		db.collection('users').findOneAndUpdate({email: req.user.local.email}, { $push: { favorites: postId } })
+		res.status(200)
+	} catch (err) {
 		console.log(err)
 	}
-
-  }); 
-
+})
   // SIGNUP =================================
   // show the signup form
   app.get("/signup", function (req, res) {

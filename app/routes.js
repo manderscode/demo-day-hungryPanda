@@ -197,24 +197,33 @@ module.exports = function (app, passport, db) {
       // 	db.collection('users').findOneAndUpdate({email: req.user.local.email}, { $push: { favorites:postId }})
       // 	console.log('we made the update')
       // 	res.status(200)
-
+		db.collection('post').findOne({ _id: req.body.postId}).then((result) => { console.log(result) }) 
+		console.log(req.user._id)
+		console.log(req.body.postId)
       db.collection("post").findOneAndUpdate(
-        { _id: ObjectID(req.body._id)},
+        { _id: req.body.postId}, 
         {
           $push: {
             favorites: req.user._id,
+			"favorites": 1234, 
           }
         },
-        {
-          sort: { _id: -1 },
-          upsert: false,
-        },
-        (err, result) => {
-          if (err) return res.send(err);
-          console.log(result);
-          res.send(result);
-        }
-      );
+        // {
+        //   sort: { _id: -1 },
+        //   upsert: false,
+        // },
+        // (err, result) => {
+		// 	console.log(err)
+        //   if (err) return res.send(err);
+        //   console.log(result);
+        //   res.send(result);
+        // }
+      ).then((result) => { 
+		  console.log(result)
+		  res.status(200).send("okay")
+		}).catch((error) => {
+			response.status(error.status_code).send(error.message);
+		 });
     } catch (err) {
       console.log(err);
     }

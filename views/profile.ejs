@@ -34,6 +34,8 @@
 </form>
 
 <a href ="/logout"> Log Out</a>
+<a href="">Go Back to CMart Feed</a>
+
 
 <div class="tm-section tm-section-pad tm-bg-img" id="tm-section-5">                                                        
     <div class="container ie-h-align-center-fix">
@@ -50,14 +52,12 @@
                     <article class="media tm-margin-b-20 tm-media-1">
                         <img class="snackImages" src="<%= posts[i].photo %>" alt="Image">
                         <div class="media-body tm-media-body-1 tm-media-body-v-center">
-                            <!-- <h3 class="tm-font-semibold tm-article-title-3">Suspendisse vel est libero sem phasellus ac laoreet</h3> -->
                             <p><%= posts[i].foodDescription %></p>
-                            <!-- <a href="#" class="text-uppercase tm-color-primary tm-font-semibold">Continue reading...</a> -->
+                            <p><%= posts[i].favorites %></p>
                         </div>                                
                     </article>
                     <% } %>
-
-                </div>                            
+                </div>   
             </div>
         </div>
     </div>

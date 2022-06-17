@@ -20,7 +20,7 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1>Feed</h1>
+        <h2><a href="">Feed</a></h2> 
         <a href="/profile">Profile</a>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
@@ -46,12 +46,12 @@
                             <p><%= posts[i].noBuySnackAgain %></p>
                             <%console.log(posts[i])%>
                             
-                            <button id="<%=posts[i]._id %>" onClick="addFavorite('<%=posts[i]._id %>')"> Add to Favorites</button>
+                            <button class="addFavorite" id="<%=posts[i]._id %>" onclick="addFavorite('<%=posts[i]._id %>')"> Add to Favorites</button>
 
                             <!-- <a href="#" class="text-uppercase tm-color-primary tm-font-semibold">Continue reading...</a> -->
                         </div>                                
                     </article>
-                    <% } %>
+                    <% } %>ß
                 </div>                            
             </div>
         </div>
@@ -60,7 +60,7 @@
 </div>           
 
 
-<script src="main.js"></script>
+<script src="/js/cmart.js"></script>
 <script src="/js/homepage.js"></script>
 <script src="js/jquery-1.11.3.min.js"></script>             <!-- jQuery (https://jquery.com/download/) -->
 <script src="js/popper.min.js"></script>                    <!-- https://popper.js.org/ -->       
@@ -74,5 +74,5 @@ crossorigin="anonymous"></script>
 <script>
 
 
-</body>
-</html>
+// </body>
+// </html>

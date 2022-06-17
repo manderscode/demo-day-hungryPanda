@@ -132,7 +132,7 @@ module.exports = function (app, passport, db) {
       .find()
       .toArray((err, result) => {
         if (err) return console.log(err);
-		console.log(result)
+        console.log(result);
         res.render("cmart.ejs", {
           posts: result,
         });
@@ -143,15 +143,19 @@ module.exports = function (app, passport, db) {
   // User Profile
   // tells the db to find the user with that specific id
   app.get("/profile", isLoggedIn, (req, res) => {
-    let user = req.user._id;
-    db.collection("posts")
-      .find({ user: user })
-      .toArray((err, result) => {
-        if (err) return console.log(err);
-        res.render("profile.ejs", {
-          posts: result,
-        });
-      });
+        db.collection("posts")
+          .find()
+          .toArray((err, result) => {
+			let user = req.user._id;
+			console.log("this is the user", user)
+			console.log(result)
+			// let usersFavorites = result.filter(fave => fave.favorites.includes(user)) 
+            if (err) return console.log(err);
+            res.render("profile.ejs", {
+              posts: result,
+            //   favorites: usersFavorites,
+            });
+          });
     // { message: req.flash('loginMessage') })
   });
 
@@ -167,6 +171,7 @@ module.exports = function (app, passport, db) {
           yesBuySnackAgain: req.body.yesBuySnackAgain,
           noBuySnackAgain: req.body.noBuySnackAgain,
           photo: photo.secure_url,
+		  favorites:[]
         },
         (err, result) => {
           if (err) return console.log(err);
@@ -179,15 +184,63 @@ module.exports = function (app, passport, db) {
     }
   });
   app.put("/addFavorite", (req, res) => {
-	// Object Destructuring (pulling values out of an object into their own variables)
-	const {postId } = req.body
-	try {
-		db.collection('users').findOneAndUpdate({email: req.user.local.email}, { $push: { favorites: postId } })
-		res.status(200)
-	} catch (err) {
-		console.log(err)
-	}
-})
+    // Object Destructuring (pulling values out of an object into their own variables)
+    const { postId } = req.body;
+    console.log(postId);
+    try {
+      // 	console.log(req.user.local.email)
+      // 	const user = db.collection('users').findOne({email: req.user.local.email})
+      // 	console.log(user)
+      // 	console.log(user.local)
+      // 	console.log(user.favorites)
+
+      // 	db.collection('users').findOneAndUpdate({email: req.user.local.email}, { $push: { favorites:postId }})
+      // 	console.log('we made the update')
+      // 	res.status(200)
+
+      db.collection("post").findOneAndUpdate(
+        { _id: ObjectID(req.body._id)},
+        {
+          $push: {
+            favorites: req.user._id,
+          }
+        },
+        {
+          sort: { _id: -1 },
+          upsert: false,
+        },
+        (err, result) => {
+          if (err) return res.send(err);
+          console.log(result);
+          res.send(result);
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
+
+	
+	app.post("/makePost", upload.single("file-to-upload"), (req, res) => {
+		let user = req.user._id;
+		db.collection("posts").save(
+		  {
+			caption: req.body.caption,
+			img: "images/uploads/" + req.file.filename,
+			postedBy: user,
+		  },
+		  (err, result) => {
+			if (err) return console.log(err);
+			console.log("saved to database");
+			res.redirect("/profile");
+		  }
+		);
+	  });
+	
+	
+
+	
+	
+  });
   // SIGNUP =================================
   // show the signup form
   app.get("/signup", function (req, res) {

@@ -10,7 +10,7 @@ const MongoClient = require('mongodb').MongoClient
 var mongoose = require('mongoose')
 var passport = require('passport')
 var flash = require('connect-flash')
-var ObjectId = require ('mongodb').ObjectId
+// var ObjectId = require ('mongodb').ObjectId
 
 var morgan = require('morgan')
 var cookieParser = require('cookie-parser')
@@ -27,7 +27,7 @@ mongoose.set('useUnifiedTopology', true)
 mongoose.connect(configDB.url, (err, database) => {
 	if (err) return console.log(err)
 	db = database
-	require('./app/routes.js')(app, passport, db, ObjectId)
+	require('./app/routes.js')(app, passport, db)
 }) // connect to our database
 
 require('./config/passport')(passport) // pass passport for configuration

@@ -15,8 +15,6 @@
     <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
     <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
     <link rel="stylesheet" href="css/tooplate-style.css">                                   <!-- Templatemo style -->
-    <script src="https://kit.fontawesome.com/b350ecca7b.js" crossorigin="anonymous"></script>
-
 
     <title>HungryPanda Profile</title>
 </head>
@@ -31,24 +29,12 @@
   <p>Would you buy the snack again?</p>
   <input type="radio" name="yesBuySnackAgain" id="snackYes" value="Yes" /> Yes
   <input type="radio" name="noBuySnackAgain" id="snackNo" value="No" /> No
-
-  <p>Is the snack savory or sweet??</p>
-  <input type="radio" name="snackCategory" id="savory" value="Savory" /> Savory
-  <input type="radio" name="snackCategory" id="sweet" value="Sweet" /> Sweet
-
   <input type="file" name="file" />
   <button type="submit">Submit</button>
 </form>
 
 <a href ="/logout"> Log Out</a>
 <a href="/cmart">Go Back to CMart Feed</a>
-
-<select id ="categoriesPosts">  
-    <option> ---View Your Posts or Your Favorites--- </option>  
-    <option <%= selected ===  'My Posts' ? 'selected' : ''%> > My Posts</option>  
-    <option <%= selected ===  'Favorite Posts' ? 'selected' : ''%>>  Favorite Posts </option> 
-
-    </select>  
 
 
 <div class="tm-section tm-section-pad tm-bg-img" id="tm-section-5">                                                        
@@ -66,8 +52,6 @@
                     <article class="media tm-margin-b-20 tm-media-1">
                         <img class="snackImages" src="<%= posts[i].photo %>" alt="Image">
                         <div class="media-body tm-media-body-1 tm-media-body-v-center">
-                           <button class="deletePost" id="<%=posts[i]._id %>" onclick="deletePost('<%=posts[i]._id %>')"> Delete</button>
-
                             <p><%= posts[i].foodDescription %></p>
                             <p><%= posts[i].favorites %></p>
                         </div>                                
@@ -83,4 +67,4 @@
 </body>
 </html>
 
-<script src="/js/profile.js"></script>
+{"lastErrorObject":{"n":0,"updatedExisting":false},"value":null,"ok":1,"$clusterTime":{"clusterTime":"7110308196635377683","signature":{"hash":"EGBgXqtdPrDgiM+AjZWwo0h/eFI=","keyId":"7060594706098421771"}},"operationTime":"7110308196635377683"}

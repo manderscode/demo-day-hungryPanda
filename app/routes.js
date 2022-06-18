@@ -1,4 +1,4 @@
-module.exports = function (app, passport, db) {
+module.exports = function (app, passport, db, ObjectId) {
   const cloudinary = require("../config/cloudinary");
   const upload = require("../config/multer"); // this is a module AKA another js file you're using from an external source
   // normal routes ===============================================================
@@ -125,37 +125,65 @@ module.exports = function (app, passport, db) {
       failureFlash: true, // allow flash messages
     })
   );
-  // CMart
+  // CMart can be made into grocery store instead of cmart and pass in the ID's of 
 
-  app.get("/cmart", (req, res) => {
+  app.get("/groceryStores/:groceryStoreName", (req, res) => {
+	  const query = {
+      storeId: req.query.id, 
+		  snackCategory: req?.query?.snackCategories ? req?.query?.snackCategories: "Sweet"
+	  };
+    console.log(query)
     db.collection("posts")
-      .find()
+	.find(query)
       .toArray((err, result) => {
         if (err) return console.log(err);
-        console.log(result);
         res.render("cmart.ejs", {
+          groceryStoreName: req.params.groceryStoreName,
           posts: result,
         });
       });
     // { message: req.flash('loginMessage') })
   });
 
+  // Savory versus Sweet Snack Filter
+//   app.post("/cmart", (req, res) => {
+// 	  console.log(req.query)
+//     db.collection("posts")
+//       .toArray((err, result) => {
+//         if (err) return console.log(err);
+//         console.log(result);
+//         res.render("profile.ejs", {
+//           posts: result,
+//         });
+//       });
+//     // { message: req.flash('loginMessage') })
+//   });
+
   // User Profile
   // tells the db to find the user with that specific id
   app.get("/profile", isLoggedIn, (req, res) => {
-        db.collection("posts")
-          .find()
-          .toArray((err, result) => {
-			let user = req.user._id;
-			console.log("this is the user", user)
-			console.log(result)
-			// let usersFavorites = result.filter(fave => fave.favorites.includes(user)) 
-            if (err) return console.log(err);
-            res.render("profile.ejs", {
-              posts: result,
-            //   favorites: usersFavorites,
-            });
-          });
+	 query = {
+	};
+	if (req?.query?.categoriesPosts === "Favorite Posts") { 
+		query={ favorites: { $all: [ObjectId(req.user._id)] }}
+	} else { 
+		query= { user: ObjectId(req.user._id) }
+	}
+	console.log(query)
+
+    db.collection("posts")
+      .find( query 
+      )
+      .toArray((err, result) => {
+        let user = req.user._id;
+        // let usersFavorites = result.filter(fave => fave.favorites.includes(user))
+        if (err) return console.log(err);
+        res.render("profile.ejs", {
+          posts: result,
+		  selected: req.query.categoriesPosts
+          //   favorites: usersFavorites,
+        });
+      });
     // { message: req.flash('loginMessage') })
   });
 
@@ -170,8 +198,9 @@ module.exports = function (app, passport, db) {
           foodDescription: req.body.foodDescription,
           yesBuySnackAgain: req.body.yesBuySnackAgain,
           noBuySnackAgain: req.body.noBuySnackAgain,
+		  snackCategory: req.body.snackCategory,
           photo: photo.secure_url,
-		  favorites:[]
+          favorites: [],
         },
         (err, result) => {
           if (err) return console.log(err);
@@ -183,73 +212,63 @@ module.exports = function (app, passport, db) {
       console.log(err);
     }
   });
-  app.put("/addFavorite", (req, res) => {
+  app.put("/addFavorite", isLoggedIn, (req, res) => {
     // Object Destructuring (pulling values out of an object into their own variables)
     const { postId } = req.body;
     console.log(postId);
+    console.log(req.user._id);
     try {
-      // 	console.log(req.user.local.email)
-      // 	const user = db.collection('users').findOne({email: req.user.local.email})
-      // 	console.log(user)
-      // 	console.log(user.local)
-      // 	console.log(user.favorites)
-
-      // 	db.collection('users').findOneAndUpdate({email: req.user.local.email}, { $push: { favorites:postId }})
-      // 	console.log('we made the update')
-      // 	res.status(200)
-		db.collection('post').findOne({ _id: req.body.postId}).then((result) => { console.log(result) }) 
-		console.log(req.user._id)
-		console.log(req.body.postId)
-      db.collection("post").findOneAndUpdate(
-        { _id: req.body.postId}, 
+      db.collection("posts").findOneAndUpdate(
+        { _id: ObjectId(req.body.postId) },
         {
           $push: {
             favorites: req.user._id,
-			"favorites": 1234, 
-          }
+          },
         },
-        // {
-        //   sort: { _id: -1 },
-        //   upsert: false,
-        // },
-        // (err, result) => {
-		// 	console.log(err)
-        //   if (err) return res.send(err);
-        //   console.log(result);
-        //   res.send(result);
-        // }
-      ).then((result) => { 
-		  console.log(result)
-		  res.status(200).send("okay")
-		}).catch((error) => {
-			response.status(error.status_code).send(error.message);
-		 });
+        {
+          sort: { _id: -1 },
+          upsert: false,
+        },
+        (err, result) => {
+          console.log(err);
+          if (err) return res.send(err);
+          console.log(result);
+          res.send(result);
+        }
+      );
     } catch (err) {
       console.log(err);
     }
-
-	
-	app.post("/makePost", upload.single("file-to-upload"), (req, res) => {
-		let user = req.user._id;
-		db.collection("posts").save(
-		  {
-			caption: req.body.caption,
-			img: "images/uploads/" + req.file.filename,
-			postedBy: user,
-		  },
-		  (err, result) => {
-			if (err) return console.log(err);
-			console.log("saved to database");
-			res.redirect("/profile");
-		  }
-		);
-	  });
-	
-	
-
-	
-	
   });
+
+  app.post("/makePost", upload.single("file-to-upload"), (req, res) => {
+    let user = req.user._id;
+    db.collection("posts").save(
+      {
+        caption: req.body.caption,
+        img: "images/uploads/" + req.file.filename,
+        postedBy: user,
+      },
+      (err, result) => {
+        if (err) return console.log(err);
+        console.log("saved to database");
+        res.redirect("/profile");
+      }
+    );
+  });
+
+  app.delete("/posts", (req, res) => {
+    console.log("here is delete request", req.body.postId);
+
+    db.collection("posts").findOneAndDelete(
+      { _id: ObjectId(req.body.postId), user: ObjectId(req.user._id) },
+      (err, result) => {
+        if (err) return res.send(500, err);
+        res.send("Post deleted!");
+      }
+    );
+  });
+
   // SIGNUP =================================
   // show the signup form
   app.get("/signup", function (req, res) {

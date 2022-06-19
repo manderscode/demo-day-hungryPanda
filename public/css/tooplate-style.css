@@ -5,7 +5,22 @@ Tooplate 2095 Level
 https://www.tooplate.com/view/2095-level
 
 */
+/* button {
 
+	display: inline-block;
+	outline: none;
+	cursor: pointer;
+	font-size: 16px;
+	line-height: 20px;
+	font-weight: 600;
+	border-radius: 8px;
+	padding: 14px 24px;
+	border: none;
+	transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
+	background: linear-gradient(to right, rgb(221, 17, 48) 0%, rgb(221, 17, 48) 50%, rgb(221, 17, 48) 100%);
+	color: #fff;
+
+} */
 body {
 	font-family: 'Open Sans', Helvetica, Arial, sans-serif;
 	font-size: 13px;
@@ -13,7 +28,29 @@ body {
 	overflow-x: hidden;
 }
 
-a, button { transition: all 0.3s ease; }
+a, button { transition: all 0.3s ease;
+	display: inline-block;
+	outline: 0;
+	text-align: center;
+	cursor: pointer;
+	height: 34px;
+	padding: 0 13px;
+	color: #fff;
+	vertical-align: top;
+	border-radius: 3px;
+	border: 1px solid transparent;
+	transition: all .3s ease;
+	background: #cc4d29;
+	/* border-color: #cc4d29; */
+	font-weight: 600;
+	text-transform: uppercase;
+	line-height: 16px;
+	font-size: 11px;
+	:hover {
+		background: #e4461b;
+		border-color: #e4461b;
+	}
+	 }
 a:hover,
 a:focus {
 	text-decoration: none;
@@ -241,6 +278,7 @@ select.tm-select::-ms-expand { display: none; }
 
 /* https://css-tricks.com/creating-non-rectangular-headers/ */
 .tm-section-down-arrow {
+	margin-left: 43%;
   position: absolute;
   top: -1px;
   width: 100%;

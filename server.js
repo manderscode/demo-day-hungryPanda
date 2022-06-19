@@ -10,7 +10,7 @@ const MongoClient = require('mongodb').MongoClient
 var mongoose = require('mongoose')
 var passport = require('passport')
 var flash = require('connect-flash')
-// var ObjectId = require ('mongodb').ObjectId
+var ObjectId = require ('mongodb').ObjectId
 
 var morgan = require('morgan')
 var cookieParser = require('cookie-parser')
@@ -18,6 +18,7 @@ var bodyParser = require('body-parser')
 var session = require('express-session')
 require("dotenv").config({ path: "./config/.env" });
 var configDB = require('./config/database.js')
+const override = require('method-override')
 
 var db
 
@@ -27,7 +28,7 @@ mongoose.set('useUnifiedTopology', true)
 mongoose.connect(configDB.url, (err, database) => {
 	if (err) return console.log(err)
 	db = database
-	require('./app/routes.js')(app, passport, db)
+	require('./app/routes.js')(app, passport, db, ObjectId)
 }) // connect to our database
 
 require('./config/passport')(passport) // pass passport for configuration
@@ -40,7 +41,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
 app.set('view engine', 'ejs') // set up ejs for templating
-
+app.use(override('_method'))
 // required for passport
 app.use(
 	session({

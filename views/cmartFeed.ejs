@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+    <title>CMart Snacks</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">                <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">                                      <!-- Bootstrap style -->
+    <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
+    <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
+    <link rel="stylesheet" href="css/tooplate-style.css">                                  <!-- Templatemo style -->
+    <!-- <script src="https://kit.fontawesome.com/b350ecca7b.js" crossorigin="anonymous"></script> -->
+
+
+</head>
+<body>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h2><a href="">Feed</a></h2> 
+        <a href="/profile"> </a>
+        <a href="/login" class="btn btn-default btn-sm">Log In</a>
+        <a href="/signup" class="btn btn-default btn-sm">Sign Up</a>
+        <a href="/" class="btn btn-default btn-sm">Go Back to Home Page</a>
+
+
+    </div>
+
+<div class="tm-section tm-section-pad tm-bg-img" id="tm-section-5">                                                        
+    <div class="container ie-h-align-center-fix">
+        <div class="row tm-flex-align-center">
+            <div class="col-xs-12 col-md-12 col-lg-3 col-xl-3 tm-media-title-container">
+                <h2 class="text-uppercase tm-section-title-2">CMart</h2>
+                <h3 class="tm-color-primary tm-font-semibold tm-section-subtitle-2">Savory Snacks</h3>
+            </div>
+            <div class="col-xs-12 col-md-12 col-lg-9 col-xl-9 mt-0 mt-sm-3">
+                
+                <div class="ml-auto tm-bg-white-shadow tm-pad tm-media-container">
+                    <% for(let i=0; i<posts.length; i++) {%>
+
+                    <article class="media tm-margin-b-20 tm-media-1">
+                        <img class="snackImages" src="<%= posts[i].photo %>" alt="Image">
+                        <div class="media-body tm-media-body-1 tm-media-body-v-center">
+                            <!-- <h3 class="tm-font-semibold tm-article-title-3">Suspendisse vel est libero sem phasellus ac laoreet</h3> -->
+                            <p><%= posts[i].foodDescription %></p>
+                            <p>Would you buy the snack again?</p>
+
+                            <p><%= posts[i].yesBuySnackAgain %></p>
+                            <p><%= posts[i].noBuySnackAgain %></p>
+                            
+                            <form action="/addFavorite/<%=posts[i]._id%>?_method=PUT" method="post"> <button type="submit" id="<%=posts[i]._id%>">Add to Favorites</button></form>
+
+
+                            <!-- <a href="#" class="text-uppercase tm-color-primary tm-font-semibold">Continue reading...</a> -->
+                        </div>                                
+                    </article>
+                    <% } %>
+                </div>                            
+            </div>
+        </div>
+    </div>
+</div>
+</div>           
+
+
+<!-- <script src="/js/cmart.js"></script> -->
+<script src="/js/main.js"></script>
+<!-- <script src="/js/homepage.js"></script> -->
+<!-- <script src="/js/jquery-1.11.3.min.js"></script>             jQuery (https://jquery.com/download/) -->
+<!-- <script src="js/popper.min.js"></script>                    https://popper.js.org/        -->
+<script src="js/bootstrap.min.js"></script>                 <!-- https://getbootstrap.com/ -->
+<!-- <script src="js/datepicker.min.js"></script>                https://github.com/qodesmith/datepicker -->
+<!-- <script src="/public/js/jquery.singlePageNav.min.js"></script>      Single Page Nav (https://github.com/ChrisWojcik/single-page-nav) -->
+<!-- <script src="/slick/slick.min.js"></script>                  http://kenwheeler.github.io/slick/ -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+crossorigin="anonymous"></script>
+<script>
+
+
+// </body>
+// </html>

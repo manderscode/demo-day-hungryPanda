@@ -1,4 +1,4 @@
-module.exports = function (app, passport, db) {
+module.exports = function (app, passport, db, ObjectId) {
   const cloudinary = require("../config/cloudinary");
   const upload = require("../config/multer"); // this is a module AKA another js file you're using from an external source
   // normal routes ===============================================================
@@ -33,58 +33,6 @@ module.exports = function (app, passport, db) {
     res.redirect("/");
   });
 
-  // message board routes ===============================================================
-
-  app.post("/messages", (req, res) => {
-    db.collection("messages").insertOne(
-      { name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown: 0 },
-      (err, result) => {
-        if (err) return console.log(err);
-        res.redirect("/profile");
-      }
-    );
-  });
-
-  app.put("/messages", (req, res) => {
-    db.collection("messages").findOneAndUpdate(
-      { name: req.body.results, msg: req.body.msg },
-
-      (err, result) => {
-        if (err) return res.send(err);
-        res.send(result);
-      }
-    );
-  });
-
-  app.put("/dislike", (req, res) => {
-    db.collection("messages").findOneAndUpdate(
-      { name: req.body.name, msg: req.body.msg },
-      {
-        $set: {
-          thumbUp: req.body.thumbUp - 1,
-        },
-      },
-      {
-        sort: { _id: -1 },
-        upsert: true,
-      },
-      (err, result) => {
-        if (err) return res.send(err);
-        res.send(result);
-      }
-    );
-  });
-
-  app.delete("/messages", (req, res) => {
-    db.collection("messages").findOneAndDelete(
-      { name: req.body.name, msg: req.body.msg },
-      (err, result) => {
-        if (err) return res.send(500, err);
-        res.send("Message deleted!");
-      }
-    );
-  });
-
   // =============================================================================
   // AUTHENTICATE (FIRST LOGIN) ==================================================
   // =============================================================================
@@ -105,18 +53,7 @@ module.exports = function (app, passport, db) {
       failureFlash: true, // allow flash messages
     })
   );
-  // Grocery Store Results Page
-
-  app.get("/groceryStoreResults", (req, res) => {
-    const mockData = {
-      name: "Grocery Store",
-      email: "grocerystore101@gmail.com",
-    };
-
-    res.render("groceryStoreResults.ejs", { mockData });
-    // { message: req.flash('loginMessage') })
-  });
-
+  // **GROCERY STORES LOCATION RESULTS PAGE**
   app.post(
     "/login",
     passport.authenticate("local-login", {
@@ -125,131 +62,167 @@ module.exports = function (app, passport, db) {
       failureFlash: true, // allow flash messages
     })
   );
-  // CMart
-
-  app.get("/cmart", (req, res) => {
+  // **CMART FEED***
+  app.get("/cmartFeed", (req, res) => {
     db.collection("posts")
       .find()
       .toArray((err, result) => {
         if (err) return console.log(err);
         console.log(result);
-        res.render("cmart.ejs", {
+        res.render("cmartFeed.ejs", {
           posts: result,
         });
       });
     // { message: req.flash('loginMessage') })
   });
 
-  // User Profile
-  // tells the db to find the user with that specific id
+  // **SAVORY VERSUS SWEET SNACK FILTER**
+  app.post("/cmart", (req, res) => {
+	  console.log(req.query)
+    db.collection("posts")
+      .toArray((err, result) => {
+        if (err) return console.log(err);
+        console.log(result);
+        res.render("profile.ejs", {
+          posts: result,
+        });
+      });
+    // { message: req.flash('loginMessage') })
+  });
+
+  // **USER PROFILE**  
+  //isLoggedIn - add this back in after done debugging
   app.get("/profile", isLoggedIn, (req, res) => {
         db.collection("posts")
           .find()
           .toArray((err, result) => {
-			let user = req.user._id;
-			console.log("this is the user", user)
-			console.log(result)
-			// let usersFavorites = result.filter(fave => fave.favorites.includes(user)) 
+            // filtering out the posts made by the user and seeing if it's equivalent to their specific user id 
+        let userPosts = result.filter(posts => posts.user === req.user._id.toString())
+        // let favorites = result[0].favorites
+        //the favorites array couldn't be compared to the userId originally b/c they weren't the same type, therefore we had to map it and then it turned it into a string first prior to comparing with the userId as a string
+        const favorites = result.filter(post => post.favorites.map(favorite => favorite.toString()).includes(req.user._id.toString()));
+        console.log("this user gang:", userPosts)
+        // console.log("this is favorites with includes method:",result[0].favorites, result[0].favorites.includes(req.user._id))
+        console.log(favorites)
+        console.log(req.user._id)
+        console.log("favorites:", favorites);
+
             if (err) return console.log(err);
             res.render("profile.ejs", {
-              posts: result,
-            //   favorites: usersFavorites,
+              user: req.user,
+              posts: userPosts,
+              favorites: favorites,
             });
           });
     // { message: req.flash('loginMessage') })
   });
 
+  //**SAVORY VERSUS SWEET **/
+  app.get("/savory", isLoggedIn, (req, res) => {
+    db.collection("posts")
+      .find()
+      .toArray((err, result) => {
+    let userPosts = result.filter(posts => posts.user === req.user._id.toString())
+    const savory = result.filter(posts => posts.savory !== null)
+        if (err) return console.log(err);
+        res.render("profile.ejs", {
+          user: req.user,
+          posts: userPosts,
+          savory: savory,
+        });
+      });
+// { message: req.flash('loginMessage') })
+});
+
+
   app.post("/makePost", upload.single("file"), async (req, res) => {
-    let user = req.user._id;
+    // let user = req.user._id;
     let photo;
     try {
       photo = await cloudinary.uploader.upload(req.file.path);
       db.collection("posts").save(
         {
-          user: user,
+          user: req.body.userID, 
           foodDescription: req.body.foodDescription,
           yesBuySnackAgain: req.body.yesBuySnackAgain,
           noBuySnackAgain: req.body.noBuySnackAgain,
+          savory: req.body.savory,
+          sweet: req.body.sweet,
           photo: photo.secure_url,
+          cloudinaryId: photo.public_id,
 		  favorites:[]
         },
         (err, result) => {
           if (err) return console.log(err);
           console.log("You Posted!");
-          res.redirect("/cmart");
+          res.redirect("/cmartFeed");
         }
       );
     } catch (err) {
       console.log(err);
     }
   });
-  app.put("/addFavorite", (req, res) => {
-    // Object Destructuring (pulling values out of an object into their own variables)
-    const { postId } = req.body;
-    console.log(postId);
-    try {
-      // 	console.log(req.user.local.email)
-      // 	const user = db.collection('users').findOne({email: req.user.local.email})
-      // 	console.log(user)
-      // 	console.log(user.local)
-      // 	console.log(user.favorites)
 
-      // 	db.collection('users').findOneAndUpdate({email: req.user.local.email}, { $push: { favorites:postId }})
-      // 	console.log('we made the update')
-      // 	res.status(200)
-		db.collection('post').findOne({ _id: req.body.postId}).then((result) => { console.log(result) }) 
-		console.log(req.user._id)
-		console.log(req.body.postId)
-      db.collection("post").findOneAndUpdate(
-        { _id: req.body.postId}, 
+  app.put("/addFavorite/:_id", (req, res) => {
+      db.collection("posts").findOneAndUpdate(
+        { _id: ObjectId(req.params._id)}, 
         {
           $push: {
             favorites: req.user._id,
-			"favorites": 1234, 
           }
         },
-        // {
-        //   sort: { _id: -1 },
-        //   upsert: false,
-        // },
-        // (err, result) => {
-		// 	console.log(err)
-        //   if (err) return res.send(err);
-        //   console.log(result);
-        //   res.send(result);
-        // }
-      ).then((result) => { 
-		  console.log(result)
-		  res.status(200).send("okay")
-		}).catch((error) => {
-			response.status(error.status_code).send(error.message);
-		 });
-    } catch (err) {
-      console.log(err);
-    }
+        {
+          sort: { _id: -1 },
+          upsert: false,
+        },
+        (err, result) => {
+			console.log(err)
+      console.log('pushed????')
+          if (err) return res.send(err);
+          console.log(result);
+          res.redirect("/profile");
+        }) 
+      });
+
 
 	
-	app.post("/makePost", upload.single("file-to-upload"), (req, res) => {
-		let user = req.user._id;
-		db.collection("posts").save(
-		  {
-			caption: req.body.caption,
-			img: "images/uploads/" + req.file.filename,
-			postedBy: user,
-		  },
-		  (err, result) => {
-			if (err) return console.log(err);
-			console.log("saved to database");
-			res.redirect("/profile");
-		  }
-		);
-	  });
+	// app.post("/makePost", upload.single("file-to-upload"), (req, res) => {
+	// 	let user = req.user._id;
+	// 	db.collection("posts").save(
+	// 	  {
+	// 		caption: req.body.caption,
+	// 		img: "images/uploads/" + req.file.filename,
+	// 		postedBy: user,
+	// 	  },
+	// 	  (err, result) => {
+	// 		if (err) return console.log(err);
+	// 		console.log("saved to database");
+	// 		res.redirect("/profile");
+	// 	  }
+	// 	);
+	//   });
 	
-	
+    app.delete("/deletePost/:_id/:cloudinary", async (req, res) => {
+      console.log("here is delete request", req.params._id);
+      try {
+      // const posts = await db.collection("posts").find({_id: ObjectId(req.params._id)})
+      console.log("this is posts")
+      await cloudinary.uploader.destroy(req.params.cloudinary)
+      
+  
+      await db.collection("posts").findOneAndDelete(
+        { _id: ObjectId(req.params._id)},
+        (err, result) => {
+          if (err) return res.send(500, err);
+          res.redirect("/profile");
 
-	
-	
-  });
+        }
+      )} catch(err){ 
+        if (err) return res.send(500, err);
+        res.redirect("/profile");
+      }
+    });
+    
   // SIGNUP =================================
   // show the signup form
   app.get("/signup", function (req, res) {
@@ -260,8 +233,8 @@ module.exports = function (app, passport, db) {
   app.post(
     "/signup",
     passport.authenticate("local-signup", {
-      successRedirect: "/", // redirect to the secure profile section
-      failureRedirect: "/", // redirect back to the signup page if there is an error
+      successRedirect: "/cmartFeed", // redirect to the secure profile section
+      failureRedirect: "/signup", // redirect back to the signup page if there is an error
       failureFlash: true, // allow flash messages
     })
   );

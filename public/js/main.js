@@ -85,3 +85,85 @@
 //       })
 //         .then(response => console.log(response))
 //         .catch(err => console.error(err));
+
+
+// const addFavorite = document.getElementsByClassName("addFavorite")
+// console.log(addFavorite)
+// Array.from(addFavorite).forEach(function(element) {
+//   element.addEventListener('click', function(){
+//     const _id = this.id
+//     console.log('client side id', _id)
+//     fetch('addFavorite', {
+//       method:'PUT',
+//       headers: {'Content-Type': 'application/json'},
+//       body: JSON.stringify({
+//         '_id': _id 
+//       })
+//     })
+//     .then(response => {
+//       if (response.ok) return response.json()
+//     })
+//     .then(data => {
+//       console.log(data)
+//       window.location.reload(true)
+//     })
+//   });
+// });
+
+// const deletePosts = document.getElementsByClassName("deletePosts")
+
+// Array.from(deletePosts).forEach(function(element) {
+//     element.addEventListener('click', function(){
+//       const _id = this.id
+//       console.log('client side id', _id)
+//       fetch('deletePosts', {
+//         method:'delete',
+//         headers: {'Content-Type': 'application/json'},
+//         body: JSON.stringify({
+//           '_id': _id 
+//         })
+//       })
+//       .then(response => {
+//         if (response.ok) return response.json()
+//       })
+//       .then(data => {
+//         console.log(data)
+//         // window.location.reload(true)
+//       })
+//     });
+//   });
+  
+// Array.from(deletePosts).forEach(function(element) {
+//   element.addEventListener('click', function(){
+//     console.log("this delete is working!")
+//     const _id = this.id
+//     console.log('client side id', _id)
+//     fetch('deletePosts', {
+//       method:'post',
+//       headers: {'Content-Type': 'application/json'},
+//       body: JSON.stringify({
+//         '_id': _id 
+//       })
+//     })
+//     .then(response => {
+//     console.log("this is a response", response.json())
+//     //   if (response.ok) return response.json()
+//         //   window.location.reload()
+
+//     })
+//     // .then(data => {
+//     // console.log(data)
+//     // //   window.location.reload()
+//     // })
+//   });
+// });
+
+// function deletePost(id) {
+//     const requestOptions = {
+//         method: 'DELETE',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({ _id: id }),
+//     }
+//     console.log(requestOptions.body)
+//     fetch('/posts', requestOptions)
+// }

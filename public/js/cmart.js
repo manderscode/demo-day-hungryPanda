@@ -22,7 +22,7 @@ checkGroceryButton.addEventListener("click", (e) => {
       for (let i = 0; i < response.results.length; i++) {
         let groceryLocation = document.createElement("li");
         let groceryLink = document.createElement("a");
-        groceryLink.href = "/cmart"
+        groceryLink.href = "/cmartFeed"
         groceryLink.innerText += " " + response.results[i].location.formatted_address;
         let clickedGroceryResult = groceryLocation.appendChild(groceryLink)
 
@@ -35,13 +35,13 @@ checkGroceryButton.addEventListener("click", (e) => {
 
 //making a fetch request to the put request "addFavorite"
 
-function addFavorite(id) {
-  console.log('addFavorite', id)
-	const requestOptions = {
-		method: 'PUT',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ postId: id }),
-	}
-	fetch('/addFavorite', requestOptions)
-}
+// function addFavorite(id) {
+//   console.log('addFavorite', id)
+// 	const requestOptions = {
+// 		method: 'PUT',
+// 		headers: { 'Content-Type': 'application/json' },
+// 		body: JSON.stringify({ postId: id }),
+// 	}
+// 	fetch('/addFavorite', requestOptions)
+// }
 

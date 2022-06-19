@@ -20,29 +20,44 @@
 </head>
 <body>
 
-
+<section class="userProfile"> 
 <h1>Hungry Panda User Profile Page</h1>
 <h2>Please feel free to upload your photo and your thoughts about the snack</h2>
 
 <form action="/makePost" enctype="multipart/form-data" method="POST">
-  <input type="text" name="foodDescription" placeholder="caption" />
-  <p>Would you buy the snack again?</p>
-  <input type="radio" name="yesBuySnackAgain" id="snackYes" value="Yes" /> Yes
-  <input type="radio" name="noBuySnackAgain" id="snackNo" value="No" /> No
-  <input type="file" name="file" />
+    <input type="hidden" name="userID" value="<%=user._id%>">
+  <input type="text"  class= "photoInput" name="foodDescription" placeholder="Please enter your">
+  <input type="file"class= "photoInput" name="file" />
   <button type="submit">Submit</button>
 </form>
 
-<a href ="/logout"> Log Out</a>
-<a href="/cmart">Go Back to CMart Feed</a>
+<p>Would you buy the snack again?</p>
+<input type="radio" name="yesBuySnackAgain" id="snackYes" value="Yes" /> Yes
+<input type="radio" name="noBuySnackAgain" id="snackNo" value="No" /> No
 
+<p>Is the snack savory or sweet??</p>
+<input type="radio" name="snackCategory" id="savory" value="Savory" /> Savory
+<input type="radio" name="snackCategory" id="sweet" value="Sweet" /> Sweet
+
+<select id ="categoriesPosts">  
+    <option> ---View Your Posts that are Savory or Sweet--- </option>  
+    <option> <a href="/savory"> Savory </a></option>  
+    <option> <a href="/sweet"> Sweet </a></option>  
+</select>  
+
+
+<section class="redirect">
+<a href ="/logout"> Log Out</a>
+<a href="/cmartFeed">Go Back to CMart Feed</a>
+</section>
+</select>  
 
 <div class="tm-section tm-section-pad tm-bg-img" id="tm-section-5">                                                        
     <div class="container ie-h-align-center-fix">
         <div class="row tm-flex-align-center">
             <div class="col-xs-12 col-md-12 col-lg-3 col-xl-3 tm-media-title-container">
                 <h2 class="text-uppercase tm-section-title-2">CMart</h2>
-                <h3 class="tm-color-primary tm-font-semibold tm-section-subtitle-2">Savory Snacks</h3>
+                <h3 class="tm-color-primary tm-font-semibold tm-section-subtitle-2">The snacks that you reviewed: </h3>
             </div>
             <div class="col-xs-12 col-md-12 col-lg-9 col-xl-9 mt-0 mt-sm-3">
                 
@@ -52,19 +67,42 @@
                     <article class="media tm-margin-b-20 tm-media-1">
                         <img class="snackImages" src="<%= posts[i].photo %>" alt="Image">
                         <div class="media-body tm-media-body-1 tm-media-body-v-center">
+                            
+                            <form action="/deletePost/<%=posts[i]._id%>/<%=posts[i].cloudinaryId%>?_method=DELETE" method="post"> <button class="deletePosts" type="submit" id="<%=posts[i]._id%>">Delete</button></form>
+
                             <p><%= posts[i].foodDescription %></p>
-                            <p><%= posts[i].favorites %></p>
+                
                         </div>                                
                     </article>
                     <% } %>
                 </div>   
             </div>
+            <div> 
+            <h2> Your Favorites </h2>
+            <div class="ml-auto tm-bg-white-shadow tm-pad tm-media-container">
+                <% for(let i=0; i<favorites.length; i++) {%>
 
+                <article class="media tm-margin-b-20 tm-media-1">
+                    <img class="snackImages" src="<%= favorites[i].photo %>" alt="Image">
+                    <div class="media-body tm-media-body-1 tm-media-body-v-center">
+                        <p> Snack Description: </p>
+                        <p><%= favorites[i].foodDescription %></p>
+                
+                    </div>                                
+                </article>
+                <% } %>
+            </div>
+
+
+        </div>
             
         </div>
     </div>
 </div>
+
+<script src="/js/main.js"></script>
+
 </body>
+
 </html>
 
-{"lastErrorObject":{"n":0,"updatedExisting":false},"value":null,"ok":1,"$clusterTime":{"clusterTime":"7110308196635377683","signature":{"hash":"EGBgXqtdPrDgiM+AjZWwo0h/eFI=","keyId":"7060594706098421771"}},"operationTime":"7110308196635377683"}

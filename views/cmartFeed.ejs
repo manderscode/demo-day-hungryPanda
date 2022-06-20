@@ -13,8 +13,7 @@
     <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
     <link rel="stylesheet" href="css/tooplate-style.css">                                  <!-- Templatemo style -->
     <!-- <script src="https://kit.fontawesome.com/b350ecca7b.js" crossorigin="anonymous"></script> -->
-
-
+    
 </head>
 <body>
 <div class="container">
@@ -25,8 +24,6 @@
         <a href="/login" class="btn btn-default btn-sm">Log In</a>
         <a href="/signup" class="btn btn-default btn-sm">Sign Up</a>
         <a href="/" class="btn btn-default btn-sm">Go Back to Home Page</a>
-
-
     </div>
 
 <div class="tm-section tm-section-pad tm-bg-img" id="tm-section-5">                                                        
@@ -34,27 +31,42 @@
         <div class="row tm-flex-align-center">
             <div class="col-xs-12 col-md-12 col-lg-3 col-xl-3 tm-media-title-container">
                 <h2 class="text-uppercase tm-section-title-2">CMart</h2>
-                <h3 class="tm-color-primary tm-font-semibold tm-section-subtitle-2">Savory Snacks</h3>
             </div>
+
+            <form>
+                <select id ="categoriesPosts">  
+                    <option value=""> ---View Posts of Snacks that are Savory or Sweet--- </option>  
+                    <option value="savory">Savory</option>  
+                    <option value="sweet">Sweet</option>  
+                </select>
+                
+                <button id="filter">Filter</button>
+                </form>
+                
             <div class="col-xs-12 col-md-12 col-lg-9 col-xl-9 mt-0 mt-sm-3">
                 
                 <div class="ml-auto tm-bg-white-shadow tm-pad tm-media-container">
                     <% for(let i=0; i<posts.length; i++) {%>
 
-                    <article class="media tm-margin-b-20 tm-media-1">
+                    <article class="media tm-margin-b-20 tm-media-1 <%= posts[i].snackCategory==='Savory' ? 'savory': 'sweet'%>">
                         <img class="snackImages" src="<%= posts[i].photo %>" alt="Image">
                         <div class="media-body tm-media-body-1 tm-media-body-v-center">
-                            <!-- <h3 class="tm-font-semibold tm-article-title-3">Suspendisse vel est libero sem phasellus ac laoreet</h3> -->
-                            <p><%= posts[i].foodDescription %></p>
-                            <p>Would you buy the snack again?</p>
 
+                            <p><%= posts[i].userName%></p>
+
+                            <p> Snack Description: </p>
+                            <p><%= posts[i].foodDescription %></p>
+
+                            <p>Would you buy the snack again?</p>
                             <p><%= posts[i].yesBuySnackAgain %></p>
                             <p><%= posts[i].noBuySnackAgain %></p>
-                            
-                            <form action="/addFavorite/<%=posts[i]._id%>?_method=PUT" method="post"> <button type="submit" id="<%=posts[i]._id%>">Add to Favorites</button></form>
+                            <p><%= posts[i].buySnackAgain %></p>
+
+                            <p> Is the snack sweet or savory? </p>
+                            <p><%= posts[i].snackCategory%></p>
 
 
-                            <!-- <a href="#" class="text-uppercase tm-color-primary tm-font-semibold">Continue reading...</a> -->
+                            <form action="/addFavorite/<%=posts[i]._id%>?_method=PUT" method="post"> <button type="submit" id="<%=posts[i]._id%>">Favorite</button></form>
                         </div>                                
                     </article>
                     <% } %>
@@ -65,6 +77,8 @@
 </div>
 </div>           
 
+</body>
+</html>
 
 <!-- <script src="/js/cmart.js"></script> -->
 <script src="/js/main.js"></script>
@@ -80,6 +94,3 @@ integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+
 crossorigin="anonymous"></script>
 <script>
 
-
-// </body>
-// </html>

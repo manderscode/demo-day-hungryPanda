@@ -33,15 +33,3 @@ checkGroceryButton.addEventListener("click", (e) => {
     .catch((err) => console.error(err));
 });
 
-//making a fetch request to the put request "addFavorite"
-
-// function addFavorite(id) {
-//   console.log('addFavorite', id)
-// 	const requestOptions = {
-// 		method: 'PUT',
-// 		headers: { 'Content-Type': 'application/json' },
-// 		body: JSON.stringify({ postId: id }),
-// 	}
-// 	fetch('/addFavorite', requestOptions)
-// }
-

@@ -8,15 +8,16 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">  <!-- Google web font "Open Sans" -->
-    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css">                <!-- Font Awesome -->
-    <link rel="stylesheet" href="css/bootstrap.min.css">                                      <!-- Bootstrap style -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"><!-- Google web font "Open Sans" -->
+    <link rel="stylesheet" href="font-awesome-4.7.0/css/font-awesome.min.css"> <!-- Font Awesome -->
+    <link rel="stylesheet" href="css/bootstrap.min.css"> <!-- Bootstrap style -->
     <link rel="stylesheet" type="text/css" href="slick/slick.css"/>
     <link rel="stylesheet" type="text/css" href="slick/slick-theme.css"/>
     <link rel="stylesheet" type="text/css" href="css/datepicker.css"/>
-    <link rel="stylesheet" href="css/tooplate-style.css">                                   <!-- Templatemo style -->
+    <link rel="stylesheet" href="css/tooplate-style.css"> <!-- Templatemo style -->
 
-    <title>HungryPanda Profile</title>
+    <title>Hungry Panda Profile</title>
+
 </head>
 <body>
 
@@ -25,26 +26,31 @@
 <h2>Please feel free to upload your photo and your thoughts about the snack</h2>
 
 <form action="/makePost" enctype="multipart/form-data" method="POST">
-    <input type="hidden" name="userID" value="<%=user._id%>">
+    <input type="hidden" name="userName" value="<%=user.local.name%>" required>
+    <input type="hidden" name="userID" value="<%=user._id%>" required>
   <input type="text"  class= "photoInput" name="foodDescription" placeholder="Please enter your">
   <input type="file"class= "photoInput" name="file" />
   <button type="submit">Submit</button>
-</form>
+
 
 <p>Would you buy the snack again?</p>
-<input type="radio" name="yesBuySnackAgain" id="snackYes" value="Yes" /> Yes
-<input type="radio" name="noBuySnackAgain" id="snackNo" value="No" /> No
+<input type="radio" name="buySnackAgain" id="snackYes" value="Yes" required/> Yes
+<input type="radio" name="buySnackAgain" id="snackNo" value="No" /> No
 
 <p>Is the snack savory or sweet??</p>
-<input type="radio" name="snackCategory" id="savory" value="Savory" /> Savory
+<input type="radio" name="snackCategory" id="savory" value="Savory" required /> Savory
 <input type="radio" name="snackCategory" id="sweet" value="Sweet" /> Sweet
+</form>
 
+<form>
 <select id ="categoriesPosts">  
-    <option> ---View Your Posts that are Savory or Sweet--- </option>  
-    <option> <a href="/savory"> Savory </a></option>  
-    <option> <a href="/sweet"> Sweet </a></option>  
-</select>  
+    <option value=""> ---View Your Posts that are Savory or Sweet--- </option>  
+    <option value="savory">Savory</option>  
+    <option value="sweet">Sweet</option>  
+</select>
 
+<button id="filter">Filter</button>
+</form>
 
 <section class="redirect">
 <a href ="/logout"> Log Out</a>
@@ -61,16 +67,25 @@
             </div>
             <div class="col-xs-12 col-md-12 col-lg-9 col-xl-9 mt-0 mt-sm-3">
                 
-                <div class="ml-auto tm-bg-white-shadow tm-pad tm-media-container">
+                <div class="ml-auto tm-bg-white-shadow tm-pad tm-media-container ">
                     <% for(let i=0; i<posts.length; i++) {%>
 
-                    <article class="media tm-margin-b-20 tm-media-1">
+                    <article class="media tm-margin-b-20 tm-media-1 <%= posts[i].snackCategory==='Savory' ? 'savory': 'sweet'%>">
+
                         <img class="snackImages" src="<%= posts[i].photo %>" alt="Image">
                         <div class="media-body tm-media-body-1 tm-media-body-v-center">
                             
                             <form action="/deletePost/<%=posts[i]._id%>/<%=posts[i].cloudinaryId%>?_method=DELETE" method="post"> <button class="deletePosts" type="submit" id="<%=posts[i]._id%>">Delete</button></form>
 
+                            <p> Snack Description: </p>
                             <p><%= posts[i].foodDescription %></p>
+                            <p>Would you buy the snack again?</p>
+                            <p><%= posts[i].yesBuySnackAgain %></p>
+                            <p><%= posts[i].noBuySnackAgain %></p>
+                            <p><%= posts[i].buySnackAgain %></p>
+    
+                            <p> Is the snack sweet or savory? </p>
+                            <p><%= posts[i].snackCategory%> </p>
                 
                         </div>                                
                     </article>
@@ -83,16 +98,24 @@
                 <% for(let i=0; i<favorites.length; i++) {%>
 
                 <article class="media tm-margin-b-20 tm-media-1">
+            
                     <img class="snackImages" src="<%= favorites[i].photo %>" alt="Image">
                     <div class="media-body tm-media-body-1 tm-media-body-v-center">
                         <p> Snack Description: </p>
                         <p><%= favorites[i].foodDescription %></p>
-                
+                        <p>Would you buy the snack again?</p>
+                        <p><%= posts[i].yesBuySnackAgain %></p>
+                        <p><%= posts[i].noBuySnackAgain %></p>
+                        <p><%= posts[i].buySnackAgain %></p>
+
+                        <p> Is the snack sweet or savory? </p>
+                        <p><%= posts[i].snackCategory%></p>                
                     </div>                                
                 </article>
                 <% } %>
-            </div>
-
+            </div> 
+            
+            
 
         </div>
             

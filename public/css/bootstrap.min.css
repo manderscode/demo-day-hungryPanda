@@ -12,6 +12,7 @@
    margin-left: 43%;
    
  }
+
 :root {
   --blue: #007bff;
   --indigo: #6610f2;
@@ -288,6 +289,7 @@ textarea {
   
   -ms-touch-action: manipulation;
   touch-action: manipulation;
+  margin-bottom: 3%;
 }
 table {
   border-collapse: collapse;
@@ -326,6 +328,7 @@ textarea {
 button,
 input {
   overflow: visible;
+  
 }
 button,
 select {
@@ -336,6 +339,7 @@ select {
 button,
 html [type="button"] {
   -webkit-appearance: button;
+  margin-bottom: 2%; 
 }
 [type="button"]::-moz-focus-inner,
 [type="reset"]::-moz-focus-inner,
@@ -427,11 +431,14 @@ h6 {
 }
 .h1,
 h1 {
-  font-size: 2.5rem;
+  font-size: 3rem;
+  font-weight: 700;
+
 }
 .h2,
 h2 {
   font-size: 2rem;
+  /* color: #60231e; */
 }
 .h3,
 h3 {
@@ -633,6 +640,7 @@ pre code {
   flex-wrap: wrap;
   margin-right: -15px;
   margin-left: -15px;
+  justify-content: center;
 }
 .no-gutters {
   margin-right: 0;

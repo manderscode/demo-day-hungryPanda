@@ -166,8 +166,8 @@ p {
 }
 
 #tm-section-1 {	
-	background-image: url('../img/breadPanda.jpg');	
-	height: 515px;
+	background-image: url('../img/twoPanda.webp');	
+	height: 725px;
 }
 
 #tm-section-5 { background-image: url('../img/bg-img-2.jpg'); }
@@ -213,7 +213,7 @@ p {
 }
 
 .btn-primary {
-	background-color: #ee5057;
+	background-color: #cc4d29;
 	border-color: #ee5057;
 	border-radius: 0;
 	cursor: pointer;

@@ -47,11 +47,13 @@
                 
                 <div class="ml-auto tm-bg-white-shadow tm-pad tm-media-container">
                     <% for(let i=0; i<posts.length; i++) {%>
+                    
 
                     <article class="media tm-margin-b-20 tm-media-1 <%= posts[i].snackCategory==='Savory' ? 'savory': 'sweet'%>">
-                        <img class="snackImages" src="<%= posts[i].photo %>" alt="Image">
-                        <div class="media-body tm-media-body-1 tm-media-body-v-center">
 
+                        <img class="snackImages" src="<%= posts[i].photo %>" alt="Image">
+
+                        <div class="media-body tm-media-body-1 tm-media-body-v-center">
                             <p><%= posts[i].userName%></p>
 
                             <p> Snack Description: </p>
@@ -64,7 +66,6 @@
 
                             <p> Is the snack sweet or savory? </p>
                             <p><%= posts[i].snackCategory%></p>
-
 
                             <form action="/addFavorite/<%=posts[i]._id%>?_method=PUT" method="post"> <button type="submit" id="<%=posts[i]._id%>">Favorite</button></form>
                         </div>                                

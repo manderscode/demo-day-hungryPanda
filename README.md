@@ -1,1 +1,1 @@
-# demo-day-hungryPanda
+#Hungry Panda Full-Stack Web Application
